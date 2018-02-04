@@ -20,14 +20,14 @@ uses
   ShellApi,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FolderDialog, Vcl.StdCtrls, Vcl.ExtCtrls,
-  W7Classes, W7NaviButtons;
+  W7Classes, W7NaviButtons, Vcl.ComCtrls;
 
 type
   TForm1 = class(TForm)
     OpenDialog1: TOpenDialog;
     EditFolder: TLabeledEdit;
     W7NavigationButton1: TW7NavigationButton;
-    Memo1: TMemo;
+    RichEdit: TRichEdit;
     Button1: TButton;
     TimerSlow: TTimer;
     LabelInfo: TLabel;
@@ -97,25 +97,25 @@ end;
 procedure TForm1.Welcome;
 // Welcome message
 begin
-  Memo1.Lines.Clear;
-  Memo1.Lines.Add('Welcome!');
-  Memo1.Lines.Add('');
-  Memo1.Lines.Add('1. Start an automatic session with Prism.');
-  Memo1.Lines.Add('2. select the new observation logg file. It usually have a name similar to "Obsauto__UTC_2018-02-04__13h31m04s".');
-  Memo1.Lines.Add('3. Press <Run>');
-  Memo1.Lines.Add('');
-  Memo1.Lines.Add('At the moment it is nececcary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
-  Memo1.Lines.Add('');
-  Memo1.Lines.Add('The software is a tool made for my own use. Its free for anyone to use in their observatory');
-  Memo1.Lines.Add('but I can not take any responsibility for any damage to equipment that might happen due');
-  Memo1.Lines.Add('to any malfunction of the software.');
-  Memo1.Lines.Add('With that said I beleive it to work well.');
-  Memo1.Lines.Add('');
-  Memo1.Lines.Add('Please drop me a mail if there is some problems: niklas@family-storck.se');
-  Memo1.Lines.Add('');
-  Memo1.Lines.Add('Clear skies!');
-  Memo1.Lines.Add('');
-  Memo1.Lines.Add('Niklas Storck');
+  RichEdit.Lines.Clear;
+  RichEdit.Lines.Add('Welcome!');
+  RichEdit.Lines.Add('');
+  RichEdit.Lines.Add('1. Start an automatic session with Prism.');
+  RichEdit.Lines.Add('2. the new observation log file. It usually has a name like "Obsauto__UTC_2018-02-04__13h31m04s".');
+  RichEdit.Lines.Add('3. Press <Run>');
+  RichEdit.Lines.Add('');
+  RichEdit.Lines.Add('At the moment it is necessary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
+  RichEdit.Lines.Add('');
+  RichEdit.Lines.Add('The software is a tool made for my own use. Its free for anyone to use in their observatory');
+  RichEdit.Lines.Add('but I can not take any responsibility for any damage to equipment that might happen due');
+  RichEdit.Lines.Add('to any malfunction of the software.');
+  RichEdit.Lines.Add('With that said I believe it to work well.');
+  RichEdit.Lines.Add('');
+  RichEdit.Lines.Add('Please drop me a mail if there is some problems: niklas@family-storck.se');
+  RichEdit.Lines.Add('');
+  RichEdit.Lines.Add('Clear skies!');
+  RichEdit.Lines.Add('');
+  RichEdit.Lines.Add('Niklas Storck');
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -134,12 +134,15 @@ begin
     else
     // Turn on
     begin
-      Memo1.Lines.Clear;
+      RichEdit.Lines.Clear;
+      LabelInfo.caption:='';
       LabelInfo.Font.Color:=RGB(25,255,25);
-      Memo1.Lines.Add('Start of sampling at: '+ DateTimeToStr(Now));
+      RichEdit.SelAttributes.Color:=clGreen;
+      RichEdit.Lines.Add('Start of sampling at: '+ DateTimeToStr(Now));
       TimerSlow.Enabled:= True;
       Button1.Caption:='Stop';
-      TimerFast.Enabled:=True
+      TimerFast.Enabled:=True;
+      TimerSlowTimer(self)
     end;
 end;
 
@@ -153,7 +156,7 @@ procedure TForm1.CallGNS(var Return: integer; SNew: string);
 var parameters, filename: String;
 
 begin
-  Memo1.Lines.Add(SNew);
+  RichEdit.Lines.Add(SNew);
   filename:='C:\Program Files (x86)\GNS\update.vbs';
   parameters:=' "'+StripTimeFromString(SNew)+'"'+' 120';
   return:=ShellExecute(handle,'open',Pchar(filename),PChar(parameters),'',SW_MINIMIZE);
@@ -163,7 +166,8 @@ begin
   begin
     filename:='C:\Program Files (x86)\GNS\switchoff.vbs';
     return:=ShellExecute(handle,'open',Pchar(filename),'','',SW_MINIMIZE);
-    Memo1.Lines.Add('The session has ended. Shutdown is sent to GNS.');
+    RichEdit.SelAttributes.Color:=clGreen;
+    RichEdit.Lines.Add('The session has ended. Shutdown is sent to GNS.');
     Button1Click(self);
     LabelInfo.caption:='Ready';
     LabelInfo.Font.Color:=RGB(25,25,255)
@@ -184,6 +188,8 @@ var F: TextFile;
     return: Integer;
 begin
    STemp:='';
+   RichEdit.Brush.Color:=RGB(200,200,200);
+   RichEdit.SelAttributes.Color:=clBlack;
    if fileexists(EditFolder.Text) then
      begin
 
@@ -197,15 +203,21 @@ begin
          begin
           CallGNS(return, SNew);
           if return < 32 then
-            Memo1.Lines.Add('Problem with talking to gns. Error: '+ intToStr(Return))
+          begin
+            RichEdit.SelAttributes.Color:=clRed;
+            RichEdit.Lines.Add('Problem with talking to gns. Error: '+ intToStr(Return));
+          end;
          end;
        SLast:=STemp;
        CloseFile(F)
      end
    else
      begin
-       Memo1.Lines.Add('File '+EditFolder.Text+' not found!');
-       Memo1.Lines.Add('Session ended!');
+       RichEdit.SelAttributes.Color:=clRed;
+       RichEdit.Lines.Add('File '+EditFolder.Text+' not found!');
+       // Memo1.Brush.Color:=RGB(255,128,128);
+       RichEdit.SelAttributes.Color:=clRed;
+       RichEdit.Lines.Add('Session ended!');
        Button1Click(self);
      end;
 end;

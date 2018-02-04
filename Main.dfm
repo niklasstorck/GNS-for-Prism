@@ -62,27 +62,33 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    Text = 'Select latest logfile'
-  end
-  object Memo1: TMemo
-    Left = 24
-    Top = 80
-    Width = 793
-    Height = 329
-    Color = clScrollBar
-    Lines.Strings = (
-      'Memo1')
-    ScrollBars = ssVertical
-    TabOrder = 1
+    Text = 'Select current logfile'
   end
   object Button1: TButton
-    Left = 728
-    Top = 432
+    Left = 766
+    Top = 446
     Width = 75
     Height = 25
     Caption = 'Run'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = Button1Click
+  end
+  object RichEdit: TRichEdit
+    Left = 24
+    Top = 80
+    Width = 825
+    Height = 346
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Lines.Strings = (
+      'RichEdit')
+    ParentFont = False
+    ScrollBars = ssVertical
+    TabOrder = 2
+    Zoom = 100
   end
   object OpenDialog1: TOpenDialog
     Left = 72
