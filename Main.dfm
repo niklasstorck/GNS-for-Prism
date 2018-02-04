@@ -58,6 +58,7 @@ object Form1: TForm1
     Color = clScrollBar
     Lines.Strings = (
       'Memo1')
+    ScrollBars = ssVertical
     TabOrder = 1
   end
   object Button1: TButton
