@@ -1,3 +1,17 @@
+// ****************************************************************************
+//
+// Software to make a connection between the Prism astronomical software
+// www.hyperion-astronomy.com and the Good Night System (GNS)
+// from lunatico.es.
+//
+// Niklas Storck
+// Hallongränd 23, 182 45 Enebyberg, Sweden
+// niklas@family-storck.se
+//
+// 2018-02-02
+//
+// ****************************************************************************
+
 unit Main;
 
 interface
@@ -56,6 +70,11 @@ begin
 end;
 
 function TForm1.ObsEnd(SNew:String): Boolean;
+// Check if observation has ended by comparing tha string
+// with a standarstring.
+// Probably I should cahnge this to someting more dynamic
+// that the user can change if Prism changes the message.
+// It works today.
 begin
   ObsEnd:=False;
   if SNew = 'Auto Observations process has been released' then
@@ -63,16 +82,20 @@ begin
 end;
 
 function TForm1.StripTimeFromString(var STemp: string):String;
+// Deletes the timestamp from the line.
+// This is because it was to much information for GNS to show in
+// its main window.
 var
   Position: Integer;
 begin
   // Extract string after ':' in line
-  Position := Pos(':', STemp) + 1;
+  Position := Pos(':', STemp) + 1; // +1 is to delete the space after ":".
   Delete(STemp, 1, Position);
   Result:=STemp;
 end;
 
 procedure TForm1.Welcome;
+// Welcome message
 begin
   Memo1.Lines.Clear;
   Memo1.Lines.Add('Welcome!');
@@ -83,7 +106,12 @@ begin
   Memo1.Lines.Add('');
   Memo1.Lines.Add('At the moment it is nececcary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
   Memo1.Lines.Add('');
-  Memo1.Lines.Add('Please mail me if there is some problems niklas@family-storck.se');
+  Memo1.Lines.Add('The software is a tool made for my own use. Its free for anyone to use in their observatory');
+  Memo1.Lines.Add('but I can not take any responsibility for any damage to equipment that might happen due');
+  Memo1.Lines.Add('to any malfunction of the software.');
+  Memo1.Lines.Add('With that said I beleive it to work well.');
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('Please drop me a mail if there is some problems: niklas@family-storck.se');
   Memo1.Lines.Add('');
   Memo1.Lines.Add('Clear skies!');
   Memo1.Lines.Add('');
@@ -91,8 +119,10 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+// Switch to handle turn on/off sampling of logfile.
 begin
   if TimerSlow.enabled then
+  // Turn of
     begin
       TimerSlow.Enabled:= False;
       Button1.Caption:= 'Run';
@@ -102,13 +132,14 @@ begin
 
     end
     else
+    // Turn on
     begin
       Memo1.Lines.Clear;
+      LabelInfo.Font.Color:=RGB(25,255,25);
       Memo1.Lines.Add('Start of sampling at: '+ DateTimeToStr(Now));
       TimerSlow.Enabled:= True;
       Button1.Caption:='Stop';
-      TimerFast.Enabled:=True;
-      LabelInfo.Font.Color:=RGB(25,255,25)
+      TimerFast.Enabled:=True
     end;
 end;
 
@@ -116,6 +147,9 @@ end;
 
 procedure TForm1.CallGNS(var Return: integer; SNew: string);
 // Calls GNS
+// SNew is the Message that is sent
+// Return is returncode from ShellExecute. Should be > 32 if ewerything is ok.
+
 var parameters, filename: String;
 
 begin
@@ -169,10 +203,15 @@ begin
        CloseFile(F)
      end
    else
-     Memo1.Lines.Add('File '+EditFolder.Text+' not found!')
+     begin
+       Memo1.Lines.Add('File '+EditFolder.Text+' not found!');
+       Memo1.Lines.Add('Session ended!');
+       Button1Click(self);
+     end;
 end;
 
 procedure TForm1.W7NavigationButton1Click(Sender: TObject);
+// Select file to read
 begin
   if OpenDialog1.execute then
     EditFolder.Text:= OpenDialog1.FileName;
