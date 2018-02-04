@@ -49,6 +49,7 @@ object Form1: TForm1
     EditLabel.Height = 13
     EditLabel.Caption = 'Map for Prism log_obs_auto'
     TabOrder = 0
+    Text = 'Select latest logfile'
   end
   object Memo1: TMemo
     Left = 24

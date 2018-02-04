@@ -28,6 +28,7 @@ type
     procedure CallGNS(var Return: integer; SNew: string);
     function ObsEnd(SNew: String):Boolean;
     function StripTimeFromString(var STemp: string):String;
+    procedure Welcome;
     { Private declarations }
   public
     { Public declarations }
@@ -47,11 +48,11 @@ begin
   Button1.Caption:= 'Run';
   TimerFast.Enabled:=False;
   LabelInfo.caption:='Idle';
-  Memo1.Lines.Clear;
   Form1.Caption:='GNS for Prism';
   Form1.Color:=RGB(100,100,100);
   SLast:='';
-  LabelInfo.Font.Color:=RGB(255,25,25)
+  LabelInfo.Font.Color:=RGB(255,25,25);
+  Welcome;
 end;
 
 function TForm1.ObsEnd(SNew:String): Boolean;
@@ -69,6 +70,25 @@ begin
   Position := Pos(':', STemp) + 1;
   Delete(STemp, 1, Position);
   Result:=STemp;
+end;
+
+procedure TForm1.Welcome;
+begin
+  Memo1.Lines.Clear;
+  Memo1.Lines.Add('Welcome!');
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('1. Start an automatic session with Prism.');
+  Memo1.Lines.Add('2. select the new observation logg file. It usually have');
+  Memo1.Lines.Add('   a name similar to "Obsauto__UTC_2018-02-04__13h31m04s".');
+  Memo1.Lines.Add('Press <Run>');
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('At the moment it is nececcary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('Please mail me if there is some problems niklas@family-storck.se');
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('Clear skies!');
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('Niklas Storck');
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -144,7 +164,7 @@ begin
          begin
           CallGNS(return, SNew);
           if return < 32 then
-            Memo1.Lines.Add('Problem with talkint to gns. Error: '+ intToStr(Return))
+            Memo1.Lines.Add('Problem with talking to gns. Error: '+ intToStr(Return))
          end;
        SLast:=STemp;
        CloseFile(F)
