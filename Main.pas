@@ -78,9 +78,8 @@ begin
   Memo1.Lines.Add('Welcome!');
   Memo1.Lines.Add('');
   Memo1.Lines.Add('1. Start an automatic session with Prism.');
-  Memo1.Lines.Add('2. select the new observation logg file. It usually have');
-  Memo1.Lines.Add('   a name similar to "Obsauto__UTC_2018-02-04__13h31m04s".');
-  Memo1.Lines.Add('Press <Run>');
+  Memo1.Lines.Add('2. select the new observation logg file. It usually have a name similar to "Obsauto__UTC_2018-02-04__13h31m04s".');
+  Memo1.Lines.Add('3. Press <Run>');
   Memo1.Lines.Add('');
   Memo1.Lines.Add('At the moment it is nececcary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
   Memo1.Lines.Add('');
