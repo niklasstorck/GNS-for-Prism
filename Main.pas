@@ -55,8 +55,6 @@ begin
 end;
 
 function TForm1.ObsEnd(SNew:String): Boolean;
-var STemp: String;
-
 begin
   ObsEnd:=False;
   if SNew = 'Auto Observations process has been released' then
