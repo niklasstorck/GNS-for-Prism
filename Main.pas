@@ -101,7 +101,7 @@ begin
   RichEdit.Lines.Add('Welcome!');
   RichEdit.Lines.Add('');
   RichEdit.Lines.Add('1. Start an automatic session with Prism.');
-  RichEdit.Lines.Add('2. the new observation log file. It usually has a name like "Obsauto__UTC_2018-02-04__13h31m04s".');
+  RichEdit.Lines.Add('2. Open the new observation log file. It usually has a name like "Obsauto__UTC_2018-02-04__13h31m04s".');
   RichEdit.Lines.Add('3. Press <Run>');
   RichEdit.Lines.Add('');
   RichEdit.Lines.Add('At the moment it is necessary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
