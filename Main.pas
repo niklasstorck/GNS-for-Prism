@@ -32,13 +32,16 @@ type
     TimerSlow: TTimer;
     LabelInfo: TLabel;
     TimerFast: TTimer;
+    LabeledEditTimeout: TLabeledEdit;
     procedure W7NavigationButton1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure TimerSlowTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure TimerFastTimer(Sender: TObject);
+    procedure LabeledEditTimeoutChange(Sender: TObject);
   private
     SLast: String;
+    TimeOut: Integer;
     procedure CallGNS(var Return: integer; SNew: string);
     function ObsEnd(SNew: String):Boolean;
     function StripTimeFromString(var STemp: string):String;
@@ -65,8 +68,23 @@ begin
   Form1.Caption:='GNS for Prism';
   Form1.Color:=RGB(100,100,100);
   SLast:='';
+  TimeOut:=120;
   LabelInfo.Font.Color:=RGB(255,25,25);
+  LabeledEditTimeout.Text:='120';
   Welcome;
+end;
+
+procedure TForm1.LabeledEditTimeoutChange(Sender: TObject);
+var s: String;
+begin
+  s:=LabeledEditTimeOut.Text;
+  Try
+    TimeOut:=StrToInt(s)
+  Except
+    TimeOut:=120;
+    s:=s+' must be a number';
+    Application.MessageBox(PWideChar(s),'Error!',MB_OK)
+  End
 end;
 
 function TForm1.ObsEnd(SNew:String): Boolean;
@@ -102,6 +120,7 @@ begin
   RichEdit.Lines.Add('');
   RichEdit.Lines.Add('1. Start an automatic session with Prism.');
   RichEdit.Lines.Add('2. Open the new observation log file. It usually has a name like "Obsauto__UTC_2018-02-04__13h31m04s".');
+  RichEdit.Lines.Add('2 b. You might want to change the timeout depending on your requirements. (Sorry I dont sawe between sesions)');
   RichEdit.Lines.Add('3. Press <Run>');
   RichEdit.Lines.Add('');
   RichEdit.Lines.Add('At the moment it is necessary that GNS is in it''s default directory C:\Program Files (x86)\GNS');
@@ -122,7 +141,7 @@ procedure TForm1.Button1Click(Sender: TObject);
 // Switch to handle turn on/off sampling of logfile.
 begin
   if TimerSlow.enabled then
-  // Turn of
+  // Turn off
     begin
       TimerSlow.Enabled:= False;
       Button1.Caption:= 'Run';
@@ -139,6 +158,7 @@ begin
       LabelInfo.Font.Color:=RGB(25,255,25);
       RichEdit.SelAttributes.Color:=clGreen;
       RichEdit.Lines.Add('Start of sampling at: '+ DateTimeToStr(Now));
+      RichEdit.Lines.Add('Longest accepted time between new lines in log-file is '+ IntToStr(TimeOut)+' s.');
       TimerSlow.Enabled:= True;
       Button1.Caption:='Stop';
       TimerFast.Enabled:=True;
@@ -158,7 +178,7 @@ var parameters, filename: String;
 begin
   RichEdit.Lines.Add(SNew);
   filename:='C:\Program Files (x86)\GNS\update.vbs';
-  parameters:=' "'+StripTimeFromString(SNew)+'"'+' 120';
+  parameters:=' "'+StripTimeFromString(SNew)+'"'+' '+IntToStr(TimeOut);
   return:=ShellExecute(handle,'open',Pchar(filename),PChar(parameters),'',SW_MINIMIZE);
 
   if ObsEnd(SNew) then

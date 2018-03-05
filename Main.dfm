@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Form1'
-  ClientHeight = 479
+  ClientHeight = 545
   ClientWidth = 873
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
@@ -41,7 +41,7 @@ object Form1: TForm1
   end
   object EditFolder: TLabeledEdit
     Left = 24
-    Top = 32
+    Top = 30
     Width = 353
     Height = 24
     Color = clScrollBar
@@ -65,8 +65,8 @@ object Form1: TForm1
     Text = 'Select current logfile'
   end
   object Button1: TButton
-    Left = 766
-    Top = 446
+    Left = 774
+    Top = 502
     Width = 75
     Height = 25
     Caption = 'Run'
@@ -75,9 +75,9 @@ object Form1: TForm1
   end
   object RichEdit: TRichEdit
     Left = 24
-    Top = 80
+    Top = 112
     Width = 825
-    Height = 346
+    Height = 377
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -89,6 +89,32 @@ object Form1: TForm1
     ScrollBars = ssVertical
     TabOrder = 2
     Zoom = 100
+  end
+  object LabeledEditTimeout: TLabeledEdit
+    Left = 24
+    Top = 74
+    Width = 353
+    Height = 24
+    Color = clScrollBar
+    EditLabel.Width = 74
+    EditLabel.Height = 16
+    EditLabel.Hint = 'The longest acceptable time between new lines in log-file'
+    EditLabel.Caption = 'Timeout (s)'
+    EditLabel.Font.Charset = DEFAULT_CHARSET
+    EditLabel.Font.Color = clGradientActiveCaption
+    EditLabel.Font.Height = -13
+    EditLabel.Font.Name = 'Tahoma'
+    EditLabel.Font.Style = [fsBold]
+    EditLabel.ParentFont = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    Text = 'The longest acceptable time '
+    OnChange = LabeledEditTimeoutChange
   end
   object OpenDialog1: TOpenDialog
     Left = 72
