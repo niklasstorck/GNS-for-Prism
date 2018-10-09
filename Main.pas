@@ -17,28 +17,28 @@ unit Main;
 interface
 
 uses
-  ShellApi,
+  ShellApi, System.UITypes,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FolderDialog, Vcl.StdCtrls, Vcl.ExtCtrls,
-  W7Classes, W7NaviButtons, Vcl.ComCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.ComCtrls;
 
 type
   TForm1 = class(TForm)
     OpenDialog1: TOpenDialog;
     EditFolder: TLabeledEdit;
-    W7NavigationButton1: TW7NavigationButton;
     RichEdit: TRichEdit;
     Button1: TButton;
     TimerSlow: TTimer;
     LabelInfo: TLabel;
     TimerFast: TTimer;
     LabeledEditTimeout: TLabeledEdit;
-    procedure W7NavigationButton1Click(Sender: TObject);
+    Button2: TButton;
     procedure Button1Click(Sender: TObject);
     procedure TimerSlowTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure TimerFastTimer(Sender: TObject);
     procedure LabeledEditTimeoutChange(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     SLast: String;
     TimeOut: Integer;
@@ -154,11 +154,15 @@ begin
     // Turn on
     begin
       RichEdit.Lines.Clear;
-      LabelInfo.caption:='';
-      LabelInfo.Font.Color:=RGB(25,255,25);
-      RichEdit.SelAttributes.Color:=clGreen;
+      LabelInfo.caption := '';
+      LabelInfo.Font.Color := RGB(25,255,25);
+      RichEdit.SelAttributes.Color := clGreen;
+      RichEdit.SelAttributes.Style := [fsBold];
       RichEdit.Lines.Add('Start of sampling at: '+ DateTimeToStr(Now));
-      RichEdit.Lines.Add('Longest accepted time between new lines in log-file is '+ IntToStr(TimeOut)+' s.');
+      RichEdit.Lines.Add('Timeout is '+ IntToStr(TimeOut)+' s.');
+      RichEdit.Lines.Add('Log file is: '+EditFolder.Text+'.');
+      RichEdit.Lines.Add('--------------------------------------------------');
+      RichEdit.Lines.Add('');
       TimerSlow.Enabled:= True;
       Button1.Caption:='Stop';
       TimerFast.Enabled:=True;
@@ -166,6 +170,14 @@ begin
     end;
 end;
 
+
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+if OpenDialog1.execute then
+    EditFolder.Text:= OpenDialog1.FileName;
+
+end;
 
 
 procedure TForm1.CallGNS(var Return: integer; SNew: string);
@@ -186,7 +198,10 @@ begin
   begin
     filename:='C:\Program Files (x86)\GNS\switchoff.vbs';
     return:=ShellExecute(handle,'open',Pchar(filename),'','',SW_MINIMIZE);
+    RichEdit.Lines.Add('');
+    RichEdit.Lines.Add('--------------------------------------------------');
     RichEdit.SelAttributes.Color:=clGreen;
+    RichEdit.SelAttributes.Style := [fsBold];
     RichEdit.Lines.Add('The session has ended. Shutdown is sent to GNS.');
     Button1Click(self);
     LabelInfo.caption:='Ready';
@@ -224,6 +239,8 @@ begin
           CallGNS(return, SNew);
           if return < 32 then
           begin
+            RichEdit.Lines.Add('--------------------------------------------------');
+            RichEdit.Lines.Add('');
             RichEdit.SelAttributes.Color:=clRed;
             RichEdit.Lines.Add('Problem with talking to gns. Error: '+ intToStr(Return));
           end;
@@ -235,18 +252,11 @@ begin
      begin
        RichEdit.SelAttributes.Color:=clRed;
        RichEdit.Lines.Add('File '+EditFolder.Text+' not found!');
-       // Memo1.Brush.Color:=RGB(255,128,128);
-       RichEdit.SelAttributes.Color:=clRed;
+       RichEdit.SelAttributes.Style := [fsBold];
        RichEdit.Lines.Add('Session ended!');
        Button1Click(self);
      end;
 end;
 
-procedure TForm1.W7NavigationButton1Click(Sender: TObject);
-// Select file to read
-begin
-  if OpenDialog1.execute then
-    EditFolder.Text:= OpenDialog1.FileName;
-end;
 
 end.

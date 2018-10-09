@@ -1,10 +1,9 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
   Caption = 'Form1'
-  ClientHeight = 545
-  ClientWidth = 873
+  ClientHeight = 535
+  ClientWidth = 863
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,19 +14,8 @@ object Form1: TForm1
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object W7NavigationButton1: TW7NavigationButton
-    Left = 383
-    Top = 29
-    Width = 24
-    Height = 24
-    Caption = 'W7NavigationButton1'
-    FadeInInterval = 17
-    FadeOutInterval = 17
-    ParentFont = False
-    OnClick = W7NavigationButton1Click
-  end
   object LabelInfo: TLabel
-    Left = 440
+    Left = 472
     Top = 25
     Width = 36
     Height = 25
@@ -115,6 +103,15 @@ object Form1: TForm1
     TabOrder = 3
     Text = 'The longest acceptable time '
     OnChange = LabeledEditTimeoutChange
+  end
+  object Button2: TButton
+    Left = 383
+    Top = 30
+    Width = 50
+    Height = 24
+    Caption = 'File'
+    TabOrder = 4
+    OnClick = Button2Click
   end
   object OpenDialog1: TOpenDialog
     Left = 72
