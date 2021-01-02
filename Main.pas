@@ -27,12 +27,14 @@ type
     OpenDialog1: TOpenDialog;
     EditFolder: TLabeledEdit;
     RichEdit: TRichEdit;
-    Button1: TButton;
     TimerSlow: TTimer;
     LabelInfo: TLabel;
     TimerFast: TTimer;
     LabeledEditTimeout: TLabeledEdit;
     Button2: TButton;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Button1: TButton;
     procedure Button1Click(Sender: TObject);
     procedure TimerSlowTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -83,7 +85,8 @@ begin
   Except
     TimeOut:=120;
     s:=s+' must be a number';
-    Application.MessageBox(PWideChar(s),'Error!',MB_OK)
+    Application.MessageBox(PWideChar(s),'Error!',MB_OK);
+
   End
 end;
 
@@ -115,6 +118,10 @@ end;
 procedure TForm1.Welcome;
 // Welcome message
 begin
+
+  Panel1.Caption:='';
+  Panel2.Caption:='';
+
   RichEdit.Lines.Clear;
   RichEdit.Lines.Add('Welcome!');
   RichEdit.Lines.Add('');
@@ -130,7 +137,7 @@ begin
   RichEdit.Lines.Add('to any malfunction of the software.');
   RichEdit.Lines.Add('With that said I believe it to work well.');
   RichEdit.Lines.Add('');
-  RichEdit.Lines.Add('Please drop me a mail if there is some problems: niklas@family-storck.se');
+  RichEdit.Lines.Add('Please drop me a mail if there is some problems: niklas@storckholmen.se');
   RichEdit.Lines.Add('');
   RichEdit.Lines.Add('Clear skies!');
   RichEdit.Lines.Add('');

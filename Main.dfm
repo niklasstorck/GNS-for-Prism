@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 535
-  ClientWidth = 863
+  ClientHeight = 499
+  ClientWidth = 553
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -26,6 +26,35 @@ object Form1: TForm1
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 447
+    Width = 553
+    Height = 52
+    Align = alBottom
+    Caption = 'Panel2'
+    TabOrder = 5
+    ExplicitTop = 491
+    ExplicitWidth = 871
+    object Button1: TButton
+      Left = 24
+      Top = 16
+      Width = 75
+      Height = 25
+      Caption = 'Run'
+      TabOrder = 0
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 553
+    Height = 113
+    Align = alTop
+    Caption = 'Panel1'
+    TabOrder = 4
+    ExplicitWidth = 870
   end
   object EditFolder: TLabeledEdit
     Left = 24
@@ -52,20 +81,12 @@ object Form1: TForm1
     TabOrder = 0
     Text = 'Select current logfile'
   end
-  object Button1: TButton
-    Left = 774
-    Top = 502
-    Width = 75
-    Height = 25
-    Caption = 'Run'
-    TabOrder = 1
-    OnClick = Button1Click
-  end
   object RichEdit: TRichEdit
-    Left = 24
-    Top = 112
-    Width = 825
-    Height = 377
+    Left = 0
+    Top = 113
+    Width = 553
+    Height = 334
+    Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -75,8 +96,11 @@ object Form1: TForm1
       'RichEdit')
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 2
+    TabOrder = 1
     Zoom = 100
+    ExplicitTop = 106
+    ExplicitWidth = 871
+    ExplicitHeight = 385
   end
   object LabeledEditTimeout: TLabeledEdit
     Left = 24
@@ -100,7 +124,7 @@ object Form1: TForm1
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
     Text = 'The longest acceptable time '
     OnChange = LabeledEditTimeoutChange
   end
@@ -110,7 +134,7 @@ object Form1: TForm1
     Width = 50
     Height = 24
     Caption = 'File'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = Button2Click
   end
   object OpenDialog1: TOpenDialog
